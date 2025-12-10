@@ -82,8 +82,8 @@ function App() {
 
 ### Files you see first
 - `public/index.html`: the single HTML file for the app; it contains a `<div id="root"></div>` placeholder (see comment in `public/index.html`).
-- `src/index.js`: the JavaScript entry point; it grabs `#root` and tells React to render your app there (see comment in `src/index.js`).
-- `src/App.js`: your first component; typically the top-level UI shell (see comment in `src/App.js`).
+- `src/index.js`: the JavaScript entry point; it runs first, grabs `#root`, and tells React to render your app there (see comment in `src/index.js`).
+- `src/App.js`: your first component; typically the top-level UI shell (see JSX notes in `src/App.js`).
 
 ### Rendering the app (React 17 style in this project)
 - The current code uses `ReactDOM.render(<App />, document.getElementById('root'));` (see `src/index.js` for the live version and comments).
@@ -102,10 +102,23 @@ Notes:
 - `<App />` is JSX. It looks like HTML, but it's just function calls under the hood. CRA compiles JSX into browser-safe JavaScript.
 - After compilation, the browser still runs plain JavaScript—React just helped you write it in a nicer way.
 
+## JSX and React.createElement
+- JSX is a developer-friendly syntax that looks like HTML inside JS files. Browsers don’t understand it directly; the build step compiles it to `React.createElement(...)`.
+- See `src/App.js` for a commented example showing the JSX component and the equivalent `React.createElement` call.
+
 ## Single Page Application (SPA) basics
 - SPA means one HTML file; React swaps views inside it instead of downloading new HTML pages.
 - Faster feel: when users click, React updates the DOM instantly; no full-page reloads needed.
 - You can still fetch data from servers (REST, GraphQL), but rendering stays on the client.
+
+## Running the app & common setup fixes
+- Run `npm install` once per clone to download `node_modules`; without it, scripts like `react-scripts start` fail with “command not found.”
+- `npm start` uses the `start` script in `package.json` to launch the CRA dev server and auto-reload on save.
+- Old CRA (react-scripts 3/webpack 4) on Node 17+ needs `NODE_OPTIONS=--openssl-legacy-provider` to avoid the OpenSSL 3 hash error; this project’s `package.json` scripts already include it. Alternatives: use Node 16 LTS or upgrade to `react-scripts@5`.
+
+## Shell defaults (bash vs zsh)
+- macOS shows “default interactive shell is now zsh” as a reminder. Stay on bash with `chsh -s /bin/bash`; switch to zsh with `chsh -s /bin/zsh`. Verify with `echo $SHELL`; list allowed shells with `cat /etc/shells`.
+- VS Code integrated terminal: Command Palette → “Terminal: Select Default Profile” → choose `bash` (or set `"terminal.integrated.defaultProfile.osx": "bash"` in settings). Open a new terminal to apply.
 
 ## What React Handles (and what it doesn’t)
 - Handles: rendering UI, responding to user events, updating the DOM efficiently.
