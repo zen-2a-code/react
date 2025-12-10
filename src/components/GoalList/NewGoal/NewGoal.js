@@ -2,7 +2,12 @@ import React, { useState } from "react"; // JSX -> React.createElement; useState
 import "./NewGoal.css"; // Styles scoped by selector, but still global; keeping them next to the component for discoverability.
 
 const NewGoal = (props) => {
-  // Controlled input state: keep the text in React state so we can read, reset, and have the input reflect updates (two-way binding).
+  /*
+    Controlled input state (kid version):
+    - Imagine the text box is a walkie-talkie. Whatever you type, we copy into React state.
+    - Because React also sends that state back into the input's "value", the two stay in sync (two-way binding).
+    - Result: we can read it, clear it, and React will redraw the input with the latest text.
+  */
   const [enteredText, setEnteredText] = useState("");
 
   // Event handler: runs on form submit. React passes the event object.
@@ -22,6 +27,7 @@ const NewGoal = (props) => {
   };
 
   // Runs on every keystroke; sync the input value into state (input -> state).
+  // "event.target.value" is literally "whatever is inside the box right now."
   const inputFieldChangeHandler = (event) => {
     setEnteredText(event.target.value); // event.target.value is the current text in the input element.
   };

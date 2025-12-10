@@ -1,6 +1,16 @@
 # React Basics (Junior-Friendly Notes)
 
-React is a JavaScript **library** that helps you build user interfaces in the browser. It focuses on the "view" layer—what the user sees and interacts with. Because it handles only the UI, people call it a library, but its ecosystem (routing, state management, build tools) feels like a full framework in practice.
+React is a JavaScript **library** that helps you build user interfaces in the browser. It focuses on the "view" layer—what the user sees and interacts with. Because it handles only the UI, people call it a library, but its ecosystem (routing, state management, build tools) feels like a full framework in practice.  
+New to the terms? See `react-beginner-playbook.md` for a kid-friendly glossary and quick exercises.  
+Want hands-on steps? Follow `react-labs.md`.  
+Want code snippets? Skim `src/examples/StarterExamples.js` for tiny practice components you can copy into `App.js`.
+Stuck on an error? See `react-error-fixes.md` for common messages and fixes.
+Need setup/run commands fast? See `react-quickstart.md`.
+Want a milestone path? See `react-beginner-roadmap.md`.
+Need a quick tour of files? See `project-map.md`.
+Ready to practice? Try `react-mini-challenges.md`.
+Not sure where to begin today? Open `start-here.md` for a short checklist.
+Have recurring questions? See `react-faq.md`.
 
 ## Where React Runs
 - Runs in the browser via `react-dom`; it is not a Node.js-only tool.

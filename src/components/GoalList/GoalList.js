@@ -2,8 +2,12 @@ import React from 'react'; // JSX compiles to React.createElement, so React must
 import './GoalList.css'; // Keep styles close to the component; CSS is still global but easier to find here.
 
 const GoalList = (props) => {
-  // props is an object React passes in; it contains whatever attributes you set on <GoalList ... />.
-  // props.goals is an array passed from App. Map it to JSX <li> elements; the result (an array of JSX) can be rendered directly.
+  /*
+    Mini mental model:
+    - "props" stands for "properties" (like settings on a toy).
+    - App hands this component a "goals" prop that is just an array of objects.
+    - We turn that array into an array of <li> elements. React can render arrays of JSX directly.
+  */
   return (
     <ul className="goal-list">
       {props.goals.map((goal) => (
