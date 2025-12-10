@@ -1,21 +1,52 @@
-import React from 'react'; // Needed because JSX compiles to React.createElement with this CRA setup.
+import React, { useState } from "react"; // JSX compiles to React.createElement, so React must be in scope in this setup.
+import "./App.css"; // Bundler injects these styles; keeping the import here groups styles with the component.
+import GoalList from "./components/GoalList/GoalList"; // Custom component (uppercase name so React knows it is not an HTML tag). Splitting keeps each file focused even if output stays the same.
+import NewGoal from "./components/GoalList/NewGoal/NewGoal"; // NewGoal component (folder-per-component keeps JSX/CSS organized).
 
 const App = () => {
-  // Root component; whatever we return here shows inside the #root div once React mounts (see src/index.js).
-  // JSX looks like HTML but is syntax sugar that compiles to React.createElement calls.
+  // useState returns [currentState, setter]. Updating via the setter triggers a re-render.
+  const [courseGoals, setCourseGoals] = useState([
+    { id: "cg1", text: "Finish the Course" },
+    { id: "cg2", text: "Learn all about the Course Main Topic" },
+    { id: "cg3", text: "Help other students in the Course Q&A" },
+  ]);
+
+  // Callback prop demo: this function is passed down and executed by the child (NewGoal) to bubble data up.
+  const addNewGoalHandler = (newGoal) => {
+    // Why new array + functional update here instead of push?:
+    // - React treats state as immutable: create a new array/object instead of mutating the existing one.
+    // - React may batch/defer updates; a functional update (`prevGoals => ...`) is guaranteed to run with the latest state, avoiding stale copies.
+    // - React checks references to detect changes; returning a NEW array (`concat`/spread) changes the reference so React re-renders efficiently.
+    // - Avoid push here: push mutates the original array; keeping the same reference can make React think “no change” and skip work.
+    // Non-functional (works when updates are rare/non-dependent, but can read stale state if batching happens):
+    // setCourseGoals(courseGoals.concat(newGoal));
+    // Functional (recommended when next state depends on previous state; avoids stale state and keeps immutability):
+    setCourseGoals((prevGoals) => prevGoals.concat(newGoal));
+  };
+
+  // Root component; rendered into #root (see src/index.js). JSX needs className (not class) to avoid clashing with the JS keyword.
   return (
-    <h1 title="This tooltip comes from the JSX attribute.">
-      A React App!
-    </h1>
+    <div className="course-goals">
+      <h2>Course Goals</h2>
+      {/* Curly braces inject JS expressions into JSX; here we pass the array as the goals prop. */}
+      <NewGoal onAddGoal={addNewGoalHandler} />{" "}
+      {/* onAddGoal is our custom prop that holds a function. */}
+      <GoalList goals={courseGoals} />{" "}
+      {/* Self-closing tag because there is no child content. JSX requires explicit closing. */}
+    </div>
   );
 };
 
-// Same output without JSX (kept as a comment so you can compare without running it):
-// const App = () =>
-//   React.createElement(
-//     'h1',
-//     { title: 'This tooltip comes from the JSX attribute.' },
-//     'A React App!'
-//   );
+// Same idea using createElement instead of JSX (for comparison only):
+// class App extends React.Component {
+//   render() {
+//     return React.createElement(
+//       'div',
+//       { className: 'course-goals' },
+//       React.createElement('h2', null, 'Course Goals'),
+//       React.createElement(GoalList, { goals: courseGoals })
+//     );
+//   }
+// }
 
 export default App;

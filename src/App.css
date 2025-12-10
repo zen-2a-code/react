@@ -1,0 +1,4 @@
+/* Styles used by App component (imported in src/App.js). CSS stays global in CRA unless you use CSS Modules. */
+.course-goals h2 {
+    text-align: center;
+}

@@ -51,6 +51,37 @@ Key idea: we never issue manual DOM commands. We just describe the UI for each s
 - A **component** is a small, reusable piece of UI (button, header, card, etc.).
 - Components can be composed (components can render other components).
 - Each component can decide what to show for different states/props.
+- Components must return JSX (or `React.createElement` output). Returning a plain object/number/string as the root will error.
+- Component names should start with an uppercase letter so React treats them as custom components (not HTML tags). See `src/App.js` for inline notes and a tiny `Title` component.
+- Two component types exist:
+  - Function components (modern default): `const App = () => <h1>Hello</h1>;`
+  - Class components (older style): `class App extends React.Component { render() { return <h1>Hello</h1>; } }`
+  Modern React favors function components with hooks; class components still work.
+- Splitting components: Break larger UIs into focused pieces (e.g., `App` renders `GoalList`). See `src/App.js` and `src/components/GoalList.js` for usage.
+- JSX requires `className` instead of `class` to avoid the JS keyword conflict.
+- Close every tag in JSX; self-close when there are no children: `<GoalList />`.
+- Importing CSS in components is allowed because the build step injects styles. Styles are still global unless you use CSS Modules. See `src/App.js` + `src/components/GoalList.js` for inline notes. CSS basics and unit explanations: `css-style-cheatsheet.md`.
+- Separation of concerns: keep files small and focused; data/logic that multiple children need (like the goals array) can live in the parent and flow down via props.
+- Optional structure tip: one folder per component can help keep JSX/CSS/tests grouped (see `src/components/GoalList` and `NewGoal`).
+
+## Props and Data Flow
+- Pass data to child components via props (custom attributes): `<GoalList goals={courseGoals} />` in `src/App.js`.
+- Props arrive as a single `props` object in the child; `props.goals` in `GoalList` corresponds to the `goals` attribute set by the parent.
+- Curly braces inside JSX inject JavaScript expressions (variables, calculations) instead of strings.
+- Arrays of JSX render directly; convert data arrays to JSX via `map`.
+- Lists need a `key` prop on each rendered sibling so React can track items efficiently. Use stable IDs (`goal.id`), not array indices when possible. See `src/components/GoalList.js`.
+- Passing data up (child → parent): pass a callback prop from parent to child and invoke it in the child with the data. Example: `onAddGoal={addNewGoalHandler}` in `src/App.js`, called as `props.onAddGoal(newGoal);` in `src/components/GoalList/NewGoal/NewGoal.js`.
+
+## State and Re-rendering
+- React re-renders when state changes (not just on any event). Plain variables/arrays won’t trigger a re-render.
+- `useState(initialValue)` returns `[currentValue, setValue]`; call `setValue` with a NEW value to update and re-render (see `src/App.js`).
+- Avoid mutating state in place (`push` on arrays). Use non-mutating updates like `concat` or spread: `setCourseGoals(prev => prev.concat(newGoal));`.
+- State can hold any type (arrays, objects, strings). Each `useState` call is independent; you can have multiple pieces of state in a component.
+
+## Event Handling
+- Use React event props (e.g., `onSubmit`, `onClick`) with a function reference, not an immediate call.
+- Prevent default browser form submission when handling in React: `event.preventDefault();` (see `src/components/GoalList/NewGoal/NewGoal.js`).
+- In JSX, inputs must be self-closing: `<input ... />`.
 
 ### Simple component composition
 ```jsx

@@ -1,0 +1,5 @@
+/* Simple spacing and centering for the NewGoal form. */
+.new-goal {
+    margin: 2rem;
+    text-align: center;
+}
